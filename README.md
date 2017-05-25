@@ -7,26 +7,26 @@
 #### example.cpp -> example of the Food asap-factory at work
 ======
 
-make run:
+##### make run:
   
   Let's try our Salad factory:
 
-  Creating Food...
-  With color green => *Pepper* !
-  Destroying Food.
+  *Creating Food...*
+  With color **green** => **Pepper** !
+  *Destroying Food.*
 
-  Creating Food...
-  With color **red** => *Tomato* !
-  Destroying Food.
+  *Creating Food...*
+  With color **red** => **Tomato** !
+  *Destroying Food.*
 
-  Creating Food...
-  With color **yellow** => *Pepper* !
-  Destroying Food.
+  *Creating Food...*
+  With color **yellow** => **Pepper** !
+  *Destroying Food.*
 
   With color **black** => No Food for this color..
 
-  Creating Food...
-  With color **white** => *Onion* !
-  Destroying Food.
+  *Creating Food...*
+  With color **white** => **Onion** !
+  *Destroying Food.*
 
 

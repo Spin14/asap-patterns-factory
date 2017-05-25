@@ -103,6 +103,8 @@ namespace asap
     Factorize() {}
     ~Factorize() {}
 
+    static Factory<Interface, KeyType> factory;
+
     template <class Concrete>
     static Resgistrator<Interface, KeyType, Concrete> registrator;
   };

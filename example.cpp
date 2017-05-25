@@ -6,26 +6,19 @@
 #include "salad.hpp"
 
 #define print(str) std::cout << str;
-using Factory = asap::Factory<salad::Vegetable, salad::Color>;
-
-std::map<salad::Color, std::string>  salad_colors
-{
-  {salad::Color::RED,     "red"},
-  {salad::Color::ORANGE,  "orange"},
-  {salad::Color::GREEN,   "green"},
-  {salad::Color::BLACK,   "black"}
-};
 
 int main()
 {
-  print("\nLet's try our Salad factory:\n\n");
+  print("Let's try our Salad factory:\n\n");
 
-  for( auto color : salad_colors)
+  std::list<std::string> colors {"green", "red", "yellow", "black", "white"};
+
+  for(auto color : colors)
   {
-    auto vegetable = Factory::generate(color.first);
+    auto food = salad::Food::factory.generate(color);
 
-    print("With color " << color.second << " => ");
-    if(vegetable) vegetable->who_am_i();
-    else print("No vegetable for this color..\n\n");
+    print("With color " << color << " => ");
+    if(food) food->who_am_i();
+    else print("No Food for this color..\n\n");
   }
 }

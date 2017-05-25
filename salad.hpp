@@ -8,70 +8,87 @@
 
 namespace salad
 {
+  // Food is going to be our interface.
+  struct Food;
 
-  // These are our colors.
-  enum Color { ORANGE, RED, GREEN, BLACK };
+  // Our goal is to make Food specializations available through a
+  // abstract factory which will respond to std::string keys.
 
-  // Vegetable is our interface.
-
-  // Lets make Vegetable specializations available through a
-  // abstract factory which takes a Color as the key.
-
-  // To do so we extende asap::Factorize<Vegetable, Color>
-  struct Vegetable : public asap::Factorize<Vegetable, Color>
+  // To do so we derive our interface from
+  // asap::Factorize<Food (Interface), Key (Factory Key type)>
+  struct Food : public asap::Factorize<Food, std::string>
   {
-    Vegetable() { std::cout << "Creating Vegetable..." << "\n";}
-    virtual ~Vegetable() { std::cout << "Destroying Vegetable." << "\n\n";}
+    Food() { std::cout << "Creating Food..." << "\n";}
+    virtual ~Food() { std::cout << "Destroying Food." << "\n\n";}
+
     virtual void who_am_i() = 0;
   };
 
   // Implementation of Tomato, nothing to do here.
-  struct Tomato : public Vegetable
+  struct Tomato : public Food
   {
     void who_am_i() override { std::cout << "Tomato !" << '\n'; }
   };
 
-  // Implementation of Carrot, nothing to do here.
-  struct Carrot : public Vegetable
+  // Implementation of Pepper, nothing to do here.
+  struct Pepper : public Food
   {
-    void who_am_i() override { std::cout << "Carrot !" << '\n'; }
+    void who_am_i() override { std::cout << "Pepper !" << '\n'; }
+
+    static std::list<std::string> colors() { return {"green", "yellow"}; }
   };
 
-  // Some typedefs we can benefit from.
-  using VegetableMap = std::map<Color, asap::Creator<Vegetable>*>;
-  using VegetableFactory = asap::Factory<Vegetable, Color>;
+  // Implementation of Onion, nothing to do here.
+  struct Onion : public Food
+  {
+    void who_am_i() override { std::cout << "Onion !" << '\n'; }
+  };
 
-  template<class V>
-  using VegetableResgistrator = asap::Resgistrator<Vegetable, Color, V>;
+  // Now we use define some typedefs we can benefit from.
+  using FoodMap = std::map<std::string, asap::Creator<Food>*>;
+  using FoodFactory = asap::Factory<Food, std::string>;
+
+  template<class Concrete>
+  using FoodResgistrator = asap::Resgistrator<Food, std::string, Concrete>;
 
 } // end namespace salad
 
 namespace asap
 {
   // Defining specializations for template members.
-  // In this case is asap::Resgistrator, as all Vegetable
-  // derivates will have a static member of such type.
+  // In this case is asap::Resgistrator, as all Food
+  // specializations will have a static member of such type.
   // Through these asap::Resgistrator specializations we
   // control how we populate the Factory's map.
 
-  // These specializations must be done inside the asap
-  // namespace ( otherwise code does not compile... ?)
+  // These specializations must be done inside the
+  // asap namespace ( otherwise code does not compile... ?)
   using namespace salad;
 
-  // empty map for starters
-  template<>
-    VegetableMap VegetableFactory::creators_map = {{}};
+  // Notice that the following definitions should always
+  // belong in the same translation unit otherwise
+  // we could make the mistake of trying to write to the
+  // factory map before its exists.
 
-  // use default constructor -> no registed in the factory map
+  // Thus, a empty map for starters
   template<>
-  VegetableResgistrator<Vegetable> Vegetable::registrator<Vegetable>;
+  FoodMap FoodFactory::creators_map = {{}};
 
-  // map specializations -> one or more entries in the factory map
+  // For the interface type we use default constructor
+  // -> nothing gets registered in the factory map.
   template<>
-    VegetableResgistrator<Tomato> Tomato::registrator<Tomato>({RED, GREEN});
+  FoodResgistrator<Food> Food::registrator<Food>;
+
+  // Now we must map the specializations -> one or more entries in the factory map
+  template<>
+  FoodResgistrator<Tomato> Tomato::registrator<Tomato>("red");
+
 
   template<>
-    VegetableResgistrator<Carrot> Carrot::registrator<Carrot>(ORANGE);
+  FoodResgistrator<Pepper> Pepper::registrator<Pepper>(Pepper::colors());
+
+  template<>
+  FoodResgistrator<Onion> Onion::registrator<Onion>("white");
 
 } // end namespace asap
 

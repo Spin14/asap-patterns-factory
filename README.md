@@ -1,22 +1,32 @@
 # asap-patterns-factory
-utility classes to create Abstract Factories as-fast-as-possible
+## utility classes to create Abstract Factories as-fast-as-possible
 
+======
+#### asap-factory.hpp -> utility classes
+#### salad.hpp -> exemple of a random interface/specializations (Food) integrating with asap-factory
+#### example.cpp -> example of the Food asap-factory at work
 ======
 
 make run:
+  
   Let's try our Salad factory:
 
-  Creating Vegetable...
-  With color orange => Carrot !
-  Destroying Vegetable.
+  Creating Food...
+  With color green => *Pepper* !
+  Destroying Food.
 
-  Creating Vegetable...
-  With color red => Tomato !
-  Destroying Vegetable.
+  Creating Food...
+  With color **red** => *Tomato* !
+  Destroying Food.
 
-  Creating Vegetable...
-  With color green => Tomato !
-  Destroying Vegetable.
+  Creating Food...
+  With color **yellow** => *Pepper* !
+  Destroying Food.
 
-  With color black => No vegetable for this color..
+  With color **black** => No Food for this color..
+
+  Creating Food...
+  With color **white** => *Onion* !
+  Destroying Food.
+
 
